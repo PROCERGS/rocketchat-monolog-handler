@@ -1,0 +1,22 @@
+{
+    "require": {
+        "guzzlehttp/guzzle": "^6.3"
+    },
+    "require-dev": {
+        "monolog/monolog": "^1.23",
+        "phpunit/phpunit": "^5.7",
+        "jakub-onderka/php-parallel-lint": "^0.9.2"
+    },
+    "autoload": {
+        "psr-4": {"PROCERGS\\": "src/Monolog"}
+    },
+    "autoload-dev": {
+        "psr-4": {"PROCERGS\\": "tests/Monolog"}
+    },
+    "scripts": {
+        "test": [
+            "parallel-lint . --exclude vendor",
+            "phpunit"
+        ]
+    }
+}
