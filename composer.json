@@ -1,5 +1,5 @@
 {
-    "name": "PROCERGS/rocketchat-monolog-handler",
+    "name": "procergs/rocketchat-monolog-handler",
     "type": "library",
     "require": {
         "php": ">=5.4",
