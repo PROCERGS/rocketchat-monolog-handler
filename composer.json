@@ -1,6 +1,7 @@
 {
     "name": "procergs/rocketchat-monolog-handler",
     "type": "library",
+    "license": "GPLv3",
     "require": {
         "php": ">=5.4",
         "monolog/monolog": "^1.23",
