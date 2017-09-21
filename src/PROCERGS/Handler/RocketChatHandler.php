@@ -19,7 +19,7 @@ use GuzzleHttp\ClientInterface;
 /**
  * RocketChatHandler uses cURL to trigger Rocket.Chat WebHooks
  *
- * @package Monolog\Handler
+ * @package PROCERGS\Handler
  */
 class RocketChatHandler extends AbstractProcessingHandler
 {

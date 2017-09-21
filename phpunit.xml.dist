@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<phpunit bootstrap="tests/bootstrap.php" colors="true">
+<phpunit bootstrap="vendor/autoload.php" colors="true">
     <testsuites>
         <testsuite name="Monolog Test Suite">
-            <directory>tests/Monolog/</directory>
+            <directory>tests/PROCERGS/</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
-            <directory suffix=".php">src/Monolog/</directory>
+            <directory suffix=".php">src/PROCERGS/</directory>
         </whitelist>
     </filter>
 

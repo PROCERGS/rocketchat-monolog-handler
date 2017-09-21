@@ -12,44 +12,88 @@
 namespace PROCERGS\Handler;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use Monolog\Logger;
-use Monolog\TestCase;
 
 /**
  * RocketChatHandler uses cURL to trigger Rocket.Chat WebHooks
  *
- * @package Monolog\Handler
+ * @package PROCERGS\Handler
  */
-class RocketChatHandlerTest extends TestCase
+class RocketChatHandlerTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstructorMinimal()
     {
         $requests = [];
         $client = $this->getClient($requests);
-        $record = $this->getRecord();
+        $record = $this->getRecord(Logger::ERROR);
 
         $handler = new RocketChatHandler('https://my.url', null, null, $client);
         $handler->handle($record);
 
+        /** @var Request $request */
+        $request = reset($requests)['request'];
+        $body = $request->getBody();
+        $requestData = json_decode($body);
+
         $this->assertNotEmpty($requests);
+        $this->assertObjectNotHasAttribute('username', $requestData);
+        $this->assertObjectNotHasAttribute('channel', $requestData);
+        $this->assertObjectHasAttribute('text', $requestData);
     }
 
     public function testConstructorComplete()
     {
-        new RocketChatHandler('https://my.url', 'channel', 'user', new Client(), Logger::DEBUG, false);
+        $requests = [];
+        $client = $this->getClient($requests);
+        $record = $this->getRecord(Logger::ERROR);
+
+        $handler = new RocketChatHandler('https://my.url', 'channel', 'user', $client, Logger::DEBUG, false);
+        $handler->handle($record);
+
+        /** @var Request $request */
+        $request = reset($requests)['request'];
+        $body = $request->getBody();
+        $requestData = json_decode($body);
+
+        $this->assertNotEmpty($requests);
+        $this->assertObjectHasAttribute('username', $requestData);
+        $this->assertObjectHasAttribute('channel', $requestData);
+        $this->assertObjectHasAttribute('text', $requestData);
     }
 
     private function getClient(&$container)
     {
         $history = Middleware::history($container);
+        $mock = new MockHandler([
+            new Response(200),
+        ]);
 
-        $stack = HandlerStack::create();
+        $stack = HandlerStack::create($mock);
         $stack->push($history);
 
         $client = new Client(['handler' => $stack]);
 
         return $client;
+    }
+
+    /**
+     * @return array Record
+     */
+    private function getRecord($level = Logger::WARNING, $message = 'test', $context = array())
+    {
+        return array(
+            'message' => $message,
+            'context' => $context,
+            'level' => $level,
+            'level_name' => Logger::getLevelName($level),
+            'channel' => 'test',
+            'datetime' => \DateTime::createFromFormat('U.u', sprintf('%.6F', microtime(true))),
+            'extra' => array(),
+        );
     }
 }

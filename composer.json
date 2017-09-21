@@ -1,17 +1,20 @@
 {
+    "name": "PROCERGS/rocketchat-monolog-handler",
+    "type": "library",
     "require": {
+        "php": ">=5.4",
+        "monolog/monolog": "^1.23",
         "guzzlehttp/guzzle": "^6.3"
     },
     "require-dev": {
-        "monolog/monolog": "^1.23",
         "phpunit/phpunit": "^5.7",
         "jakub-onderka/php-parallel-lint": "^0.9.2"
     },
     "autoload": {
-        "psr-4": {"PROCERGS\\": "src/Monolog"}
+        "psr-4": {"PROCERGS\\": "src/PROCERGS"}
     },
     "autoload-dev": {
-        "psr-4": {"PROCERGS\\": "tests/Monolog"}
+        "psr-4": {"PROCERGS\\": "tests/PROCERGS"}
     },
     "scripts": {
         "test": [
